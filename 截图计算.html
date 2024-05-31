@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品截图计算器</title>
+    <style>
+        /* 样式化容器 */
+        .container {
+            position: relative;
+            /* 设置容器为相对定位 */
+            width: 500px;
+            /* 设置容器宽度 */
+        }
+
+        /* 样式化上传按钮 */
+        label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0074d9;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* 样式化图片 */
+        img {
+            width: 400px;
+            height: auto;
+            display: block;
+            /* 使图片居中显示 */
+        }
+
+        /* 样式化标签 */
+        .overlaylabel {
+            position: absolute;
+            /* 设置标签为绝对定位，相对于容器定位 */
+            top: 10px;
+            /* 距离容器顶部的位置 */
+            left: 0px;
+            /* 距离容器左侧的位置 */
+            background-color: rgba(110, 105, 105, 0.5);
+            /* 背景透明度 */
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            opacity: 0;
+        }
+
+        /* 样式化按钮和输入框 */
+        .button-container {
+            margin-top: 20px;
+
+        }
+
+        .calc-button {
+            margin-top: 20px;
+            padding: 10px 10px;
+            background-color: #0074d9;
+            color: #fff;
+            cursor: pointer;
+            margin-right: 10px;
+
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>把手机app产品截图上传</h1>
+    <br>
+    <hr>
+
+    <!-- 容器 -->
+    <div class="container">
+        <!-- 上传按钮 -->
+        <input type="file" id="fileInput">
+        <br>
+        <!-- <label for="fileInput">上传图片</label> -->
+        <br>
+
+        <!-- 图片展示 -->
+        <img id="uploadedImage" src="#" alt="请选择图片">
+
+        <!-- 标签 -->
+        <div class="overlaylabel" style="top: 270px; left: 120px;">标签 1</div>
+        <div class="overlaylabel" style="top: 430px; left: 120px;">标签 2</div>
+        <div class="overlaylabel" style="top: 590px; left: 120px;">标签 3</div>
+        <div class="overlaylabel" style="top: 750px; left: 120px;">标签 4</div>
+    </div>
+
+    <!-- 按钮和输入框容器 -->
+    <div class="button-container">
+        <!-- 输入框 -->
+        收益率：<input type="number" id="rateInput" step="0.01"> <!-- 输入收益率 -->
+        天数：<input type="number" id="daysInput"> <!-- 输入天数 -->
+        <br>
+        <!-- 按钮 -->
+        <button class="calc-button" id="calcButton1">计算1</button>
+        <button class="calc-button" id="calcButton2">计算2</button>
+        <button class="calc-button" id="calcButton3">计算3</button>
+        <button class="calc-button" id="calcButton4">计算4</button>
+        <button class="calc-button" id="calcButton5">清 空</button>
+    </div>
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // 在这里放置你的JavaScript代码
+            // 获取上传图片按钮和图片展示元素
+            const fileInput = document.getElementById('fileInput');
+            const uploadedImage = document.getElementById('uploadedImage');
+
+            // 添加事件监听器来处理文件选择
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files[0];
+
+                if (file) {
+                    // 读取文件数据并显示在图片元素上
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        uploadedImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 获取输入框和按钮元素
+            const rateInput = document.getElementById('rateInput');
+            const daysInput = document.getElementById('daysInput');
+            const calcButton1 = document.getElementById('calcButton1');
+            const calcButton2 = document.getElementById('calcButton2');
+            const calcButton3 = document.getElementById('calcButton3');
+            const calcButton4 = document.getElementById('calcButton4');
+            // 计算并更新标签的函数
+            function calculate(labelNumber) {
+                const rate = parseFloat(rateInput.value);
+                const days = parseInt(daysInput.value);
+                const result = (10000 * rate / 365 / 100) * days;
+
+                // 选择标签元素的数组
+                const labels = document.querySelectorAll('.overlaylabel');
+
+                // 确保labelNumber在有效范围内
+                if (labelNumber >= 1 && labelNumber <= labels.length) {
+                    // 选择要更新的标签
+                    const label = labels[labelNumber - 1];
+                    label.textContent = `到期收益: ${result.toFixed(2)}元`;
+                    label.style.opacity = 1;
+
+                } else {
+                    console.error(`标签 ${labelNumber} 不存在`);
+                }
+            }
+
+
+            // 添加事件监听器来处理按钮点击
+            calcButton1.addEventListener('click', function () {
+                calculate(1);
+
+            });
+
+            calcButton2.addEventListener('click', function () {
+                calculate(2);
+            });
+
+            calcButton3.addEventListener('click', function () {
+                calculate(3);
+            });
+
+            calcButton4.addEventListener('click', function () {
+                calculate(4);
+            });
+            calcButton5.addEventListener('click', function () {
+                rateInput.value = ''
+                daysInput.value = ''
+
+
+            });
+
+
+
+        });
+
+
+
+    </script>
+</body>
+
+</html>
